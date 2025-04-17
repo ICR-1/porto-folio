@@ -1,0 +1,73 @@
+{
+  "male": [
+    {
+      "id": "m1",
+      "url": "https://randomuser.me/api/portraits/men/32.jpg",
+      "description": "Pria dengan kacamata dan rambut pendek"
+    },
+    {
+      "id": "m2",
+      "url": "https://randomuser.me/api/portraits/men/40.jpg",
+      "description": "Pria dengan rambut gelap dan janggut pendek"
+    },
+    {
+      "id": "m3",
+      "url": "https://randomuser.me/api/portraits/men/55.jpg",
+      "description": "Pria dengan rambut pendek dan wajah ramah"
+    },
+    {
+      "id": "m4",
+      "url": "https://randomuser.me/api/portraits/men/67.jpg",
+      "description": "Pria dengan janggut dan rambut agak panjang"
+    },
+    {
+      "id": "m5",
+      "url": "https://randomuser.me/api/portraits/men/78.jpg",
+      "description": "Pria dengan wajah profesional dan rambut rapi"
+    }
+  ],
+  "female": [
+    {
+      "id": "f1",
+      "url": "https://randomuser.me/api/portraits/women/33.jpg",
+      "description": "Wanita dengan rambut panjang bergelombang"
+    },
+    {
+      "id": "f2",
+      "url": "https://randomuser.me/api/portraits/women/44.jpg",
+      "description": "Wanita dengan rambut pendek dan ekspresi ramah"
+    },
+    {
+      "id": "f3",
+      "url": "https://randomuser.me/api/portraits/women/56.jpg", 
+      "description": "Wanita dengan rambut panjang lurus"
+    },
+    {
+      "id": "f4",
+      "url": "https://randomuser.me/api/portraits/women/65.jpg",
+      "description": "Wanita dengan gaya rambut profesional"
+    },
+    {
+      "id": "f5",
+      "url": "https://randomuser.me/api/portraits/women/79.jpg",
+      "description": "Wanita dengan rambut pendek dan senyum lebar"
+    }
+  ],
+  "neutral": [
+    {
+      "id": "n1",
+      "url": "https://i.pravatar.cc/300?img=1",
+      "description": "Avatar netral dengan tampilan profesional"
+    },
+    {
+      "id": "n2",
+      "url": "https://i.pravatar.cc/300?img=2",
+      "description": "Avatar netral dengan tampilan kasual"
+    },
+    {
+      "id": "n3",
+      "url": "https://i.pravatar.cc/300?img=3",
+      "description": "Avatar netral dengan tampilan artistik"
+    }
+  ]
+} 
