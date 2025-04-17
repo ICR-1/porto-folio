@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio 3D</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ... existing code ... */
+    
+    /* Carousel navigation styles */
+    .carousel-nav-button {
+      transition: all 0.3s ease;
+      padding: 8px;
+      border-radius: 50%;
+      background-color: rgba(76, 110, 245, 0.9);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 50;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 50px;
+    }
+    
+    .carousel-nav-button.prev-button {
+      left: -40px;
+    }
+    
+    .carousel-nav-button.next-button {
+      right: -40px;
+    }
+    
+    /* Hide on mobile */
+    @media (max-width: 768px) {
+      .carousel-nav-button {
+        display: none !important;
+      }
+    }
+    
+    .carousel-nav-button:hover {
+      transform: translateY(-50%) scale(1.1);
+      background-color: rgba(76, 110, 245, 1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .carousel-nav-button:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+    
+    .nav-arrow {
+      transition: all 0.2s ease;
+      stroke: white;
+    }
+    
+    .carousel-nav-button:hover .nav-arrow {
+      stroke-width: 3;
+    }
+
+    /* Portfolio section styles untuk overflow visible */
+    .portfolio-wrapper {
+      position: relative;
+      overflow: visible;
+      padding: 0 60px;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-BagvcCqK.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-A-KIMsAB.css">
+</head>
+<body class="bg-primary font-poppins">
+  <div id="canvas-container" class="fixed top-0 left-0 w-full h-screen z-0"></div>
+  
+  <!-- Hero Section -->
+  <section class="relative w-full h-screen flex flex-col items-center justify-center px-6 md:px-16">
+    <div class="max-w-7xl mx-auto text-center z-10">
+      <h1 class="text-4xl sm:text-6xl lg:text-8xl font-bold text-white-100 mb-4 opacity-0 transform translate-y-10 transition-all duration-1000" id="hero-title">
+        Aufer Page
+      </h1>
+      <p class="text-xl sm:text-2xl text-secondary mb-8 opacity-0 transform translate-y-10 transition-all duration-1000 delay-300" id="hero-subtitle">
+        <span id="changing-text" class="block min-h-[2rem]">Web Developer</span>
+      </p>
+      <button class="bg-tertiary hover:bg-black-100 text-white py-3 px-8 rounded-xl text-lg font-medium transition-all duration-300 opacity-0 transform translate-y-10" id="hero-button">
+        Lihat Portfolio
+      </button>
+    </div>
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 opacity-0" id="scroll-indicator">
+      <div class="w-8 h-12 rounded-full border-2 border-secondary flex justify-center pt-2">
+        <div class="w-1 h-3 bg-white-100 rounded-full animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div class="about-card opacity-0">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-8">Tentang Saya</h2>
+        <p class="text-secondary text-lg mb-6">
+          Halo! Saya adalah seorang web developer dengan minat kuat dalam pengembangan 3D interaktif, serta kemampuan di bidang hardware dan IoT. Saya senang menggabungkan kreativitas dengan keahlian teknis untuk menciptakan pengalaman web yang menarik, imersif, dan inovatif.
+        </p>
+        <p class="text-secondary text-lg mb-6">
+          Saya punya pengalaman dalam HTML, CSS, JavaScript, serta teknologi 3D seperti Three.js. Di sisi lain, saya juga bisa mengembangkan sistem berbasis mikrokontroler seperti Arduino dan ESP32, serta mampu mengintegrasikan perangkat keras seperti sensor, relay ke dalam solusi digital yang cerdas.
+        </p>
+        <p class="text-secondary text-lg">
+          Saya percaya bahwa masa depan teknologi adalah perpaduan antara software dan hardware yang saling terhubung. Karena itu, saya terus belajar, bereksperimen, dan menciptakan solusi kreatif yang bisa menjawab tantangan nyata. Terbuka untuk kolaborasi dan selalu siap untuk membawa ide menjadi kenyataan.
+        </p>
+      </div>
+      <div class="about-image opacity-0 flex justify-center items-center">
+        <div class="w-64 h-64 sm:w-50 sm:h-50 rounded-full bg-tertiary shadow-card overflow-hidden">
+          <img src="/images/imageavatar.png" alt="Profile" class="w-full h-full object-cover" id="profile-image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20 bg-black-100">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-16 text-center skills-title opacity-0">
+        Keterampilan Saya
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+        <!-- Skill Cards -->
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">HTML</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">CSS</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">JavaScript</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg" alt="Three.js" class="w-12 h-12 invert" />
+          </div>
+          <h3 class="text-white-100 font-medium">Three.js</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Python</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg" alt="Unity" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Unity</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/arduino/arduino-original.svg" alt="Arduino" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Arduino</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" alt="Firebase" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Firebase</h3>
+        </div>
+        
+        <!-- Keterampilan Tambahan -->
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">C++</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg" alt="Blender" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Blender</h3>
+        </div>
+        
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Figma</h3>
+        </div>
+
+        <div class="skill-card flex flex-col items-center opacity-0 transform translate-y-10">
+          <div class="w-20 h-20 mb-4 flex items-center justify-center rounded-lg bg-tertiary shadow-card">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/androidstudio/androidstudio-original.svg" alt="Android Studio" class="w-12 h-12" />
+          </div>
+          <h3 class="text-white-100 font-medium">Android Studio</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D Model Section -->
+  <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-12 model-title opacity-0">
+        Model 3D Interaktif
+      </h2>
+      <div id="model-container" class="w-full rounded-xl overflow-hidden bg-black-200 opacity-0 mx-auto"></div>
+      <p class="text-secondary mt-6 text-center model-description opacity-0">
+        Model 3D interaktif ini dapat diputar dengan mouse atau jari. Silakan eksplorasi dari berbagai sudut.
+      </p>
+    </div>
+  </section>
+
+  <!-- Portfolio Gallery Section -->
+  <section id="portfolio" class="bg-black-200 py-16 md:py-24 relative portfolio-section">
+    <h2 class="text-3xl md:text-4xl font-bold text-white-100 mb-6 text-center">Portfolio</h2>
+    <p class="text-secondary text-center mb-12 max-w-2xl mx-auto">Beberapa proyek yang telah saya kerjakan, meliputi desain UI/UX, pengembangan website, dan aplikasi mobile.</p>
+    
+    <div class="portfolio-wrapper max-w-6xl mx-auto relative">
+      <!-- Mobile swipe instruction - Only visible on mobile -->
+      <p class="swipe-instruction text-center mb-4">
+        <span>← Geser untuk melihat lebih banyak →</span>
+      </p>
+      
+      <!-- Portfolio Carousel -->
+      <div id="portfolio-carousel" class="flex overflow-x-scroll hide-scrollbar gap-6 pb-6">
+        <!-- Portfolio items will be rendered here -->
+      </div>
+      
+      <!-- Navigation Buttons - Only visible on desktop -->
+      <button id="carousel-prev" class="carousel-nav-button prev-button" aria-label="Previous Projects">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 nav-arrow">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      <button id="carousel-next" class="carousel-nav-button next-button" aria-label="Next Projects">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 nav-arrow">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20">
+    <div class="max-w-3xl mx-auto w-full">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-12 text-center contact-title opacity-0">
+        Hubungi Saya
+      </h2>
+      <div class="contact-form bg-tertiary p-8 rounded-xl shadow-card opacity-0">
+        <form id="contact-form" action="https://formsubmit.co/ferrymaulanamalikibrahim@gmail.com" method="POST" class="w-full">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="w-full">
+              <label for="name" class="block text-secondary mb-2">Nama</label>
+              <input type="text" id="name" name="name" required placeholder="Masukkan nama Anda" class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="w-full">
+              <label for="email" class="block text-secondary mb-2">Email</label>
+              <input type="email" id="email" name="email" required placeholder="email@contoh.com" class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+          <div class="mb-6 w-full">
+            <label for="subject" class="block text-secondary mb-2">Subjek</label>
+            <input type="text" id="subject" name="subject" required placeholder="Subjek pesan" class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="mb-6 w-full">
+            <label for="message" class="block text-secondary mb-2">Pesan</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Ketik pesan Anda di sini..." class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          </div>
+          <input type="hidden" name="_next" value="http://localhost:5174/?thanks=true">
+          <input type="hidden" name="_subject" value="[Portfolio] Pesan baru dari website portofolio">
+          <input type="hidden" name="_captcha" value="true">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
+          <div class="flex items-center mb-6">
+            <input id="terms" type="checkbox" required class="w-4 h-4 bg-black-200 border-gray-600 rounded focus:ring-blue-500">
+            <label for="terms" class="ml-2 text-sm text-secondary terms-label">Saya menyetujui penggunaan data untuk keperluan komunikasi</label>
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+            <span>Kirim Pesan</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="relative w-full py-8 z-10 bg-tertiary">
+    <div class="max-w-7xl mx-auto px-6 md:px-16">
+      <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div class="mb-6 md:mb-0">
+          <h3 class="text-white-100 text-xl font-bold mb-4">Kontak</h3>
+          <p class="text-secondary">ferrymaulanamalikibrahim@gmail.com</p>
+          <p class="text-secondary">+62 857 1249 1089</p>
+        </div>
+        <div class="flex flex-col">
+          <h3 class="text-white-100 text-xl font-bold mb-4 text-center md:text-right">Media Sosial</h3>
+          <div class="flex space-x-4">
+            <a href="https://github.com/ICR-1" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white-100 transition-all social-link flex flex-col items-center">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-xs mt-1">GitHub</span>
+            </a>
+            <a href="https://www.instagram.com/auferwaker" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white-100 transition-all social-link flex flex-col items-center">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-xs mt-1">Instagram</span>
+            </a>
+            <a href="https://www.linkedin.com/in/auferwaker/" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white-100 transition-all social-link flex flex-col items-center">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-xs mt-1">LinkedIn</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-6 text-center">
+        <p class="text-secondary">© 2025 Portfolio 3D. Terms and Conditions | Privacy Policy.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Portfolio Gallery Lightbox Modal -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90">
+    <div class="relative w-full h-full flex flex-col">
+      <!-- Close button -->
+      <button id="close-lightbox" class="absolute top-4 right-4 text-white z-50 p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <!-- Zoom controls -->
+      <div class="absolute top-4 left-4 flex space-x-3 z-50">
+        <button id="zoom-in" class="text-white p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </button>
+        <button id="zoom-out" class="text-white p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Image container -->
+      <div class="flex-1 flex items-center justify-center overflow-hidden">
+        <div id="lightbox-content" class="relative w-full h-full flex items-center justify-center">
+          <img id="lightbox-image" src="" alt="Project image" class="max-h-[80vh] object-contain transition-transform duration-300" />
+        </div>
+      </div>
+      
+      <!-- Navigation controls -->
+      <div class="w-full flex justify-between items-center p-4">
+        <button id="prev-project" class="text-white p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        
+        <!-- Project title and info -->
+        <div class="text-center">
+          <h3 id="lightbox-title" class="text-white text-xl font-semibold"></h3>
+          <p id="lightbox-description" class="text-secondary text-sm mt-1"></p>
+        </div>
+        
+        <button id="next-project" class="text-white p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Thumbnails slider (optional) -->
+      <div id="thumbnails-container" class="w-full px-4 pb-6 overflow-x-auto hide-scrollbar">
+        <div id="thumbnails" class="flex space-x-2 justify-center"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Halaman Terima Kasih (Hidden by default) -->
+  <div id="thank-you-page" class="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center hidden">
+    <div class="bg-tertiary p-8 rounded-xl max-w-md w-full text-center transform">
+      <div class="bg-green-500 bg-opacity-20 p-4 rounded-full w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-white-100 mb-4">Terima Kasih!</h2>
+      <p class="text-secondary mb-6">Pesan Anda telah berhasil terkirim ke Ferry Maulana Malik Ibrahim. Saya akan menghubungi Anda kembali secepatnya.</p>
+      <div class="flex justify-center">
+        <button id="thank-you-close" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 flex items-center">
+          <span>Kembali ke Portfolio</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

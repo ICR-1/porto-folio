@@ -1,0 +1,52 @@
+{
+  "projects": [
+    {
+      "id": "project1",
+      "title": "Website Portofolio 3D",
+      "description": "Website interaktif dengan animasi 3D dan UI modern menggunakan Three.js dan Tailwind CSS",
+      "image": "https://picsum.photos/seed/project1/800/600",
+      "tags": ["Three.js", "React", "WebGL"],
+      "link": "#"
+    },
+    {
+      "id": "project2",
+      "title": "Aplikasi Dashboard IoT",
+      "description": "Dashboard untuk monitoring dan kontrol perangkat IoT dengan visualisasi data real-time",
+      "image": "https://picsum.photos/seed/project2/800/600",
+      "tags": ["Arduino", "Python", "MQTT"],
+      "link": "#"
+    },
+    {
+      "id": "project3",
+      "title": "Mobile Game 2D",
+      "description": "Game petualangan 2D dengan fisika ragdoll dan grafis pixel art yang menarik",
+      "image": "https://picsum.photos/seed/project3/800/600",
+      "tags": ["Unity", "C#", "2D"],
+      "link": "#"
+    },
+    {
+      "id": "project4",
+      "title": "Aplikasi Pembelajaran AR",
+      "description": "Aplikasi edukasi dengan augmented reality untuk pembelajaran interaktif",
+      "image": "https://picsum.photos/seed/project4/800/600",
+      "tags": ["AR", "Unity", "Education"],
+      "link": "#"
+    },
+    {
+      "id": "project5",
+      "title": "Sistem Manajemen Inventaris",
+      "description": "Aplikasi web untuk melacak dan mengelola inventaris dengan fitur QR code",
+      "image": "https://picsum.photos/seed/project5/800/600",
+      "tags": ["Node.js", "MongoDB", "React"],
+      "link": "#"
+    },
+    {
+      "id": "project6",
+      "title": "Aplikasi Chat Real-time",
+      "description": "Aplikasi chat dengan fitur pesan instan, notifikasi, dan enkripsi end-to-end",
+      "image": "https://picsum.photos/seed/project6/800/600",
+      "tags": ["Firebase", "React Native", "WebSocket"],
+      "link": "#"
+    }
+  ]
+} 
