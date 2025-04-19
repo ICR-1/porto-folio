@@ -1,15 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portfolio 3D</title>
+  <title>Aufer Page</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* ... existing code ... */
     
-    /* Carousel navigation styles */
+    /* Language switcher */
+    .language-switcher {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      background-color: rgba(21, 20, 50, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-radius: 30px;
+      padding: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .language-btn {
+      border: none;
+      background: transparent;
+      color: #aaa6c3;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .language-btn.active {
+      background-color: #4c6ef5;
+      color: white;
+    }
+    
+    /* Carousel navigation styles - Khusus Desktop */
     .carousel-nav-button {
       transition: all 0.3s ease;
       padding: 8px;
@@ -61,28 +93,73 @@
       stroke-width: 3;
     }
 
-    /* Portfolio section styles untuk overflow visible */
+    /* Portofolio section styles untuk overflow visible */
     .portfolio-wrapper {
       position: relative;
       overflow: visible;
       padding: 0 60px;
+    }
+    
+    /* Animated title underline */
+    .animated-underline {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 8px;
+    }
+    
+    .animated-underline::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(to right, #4c6ef5, #3b5bdb);
+      transform: translateX(0);
+      transition: width 1s ease;
+      border-radius: 2px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .animated-underline.active::after {
+      width: 100%;
+    }
+    
+    /* Biarkan judul section awal/akhir di tengah */
+    .text-center .animated-underline::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    /* Tapi untuk judul di bagian about dengan text-align yang berubah, sesuaikan posisi garis */
+    @media (min-width: 768px) {
+      .md\:text-left .animated-underline::after {
+        left: 0;
+        transform: translateX(0);
+      }
     }
   </style>
 </head>
 <body class="bg-primary font-poppins">
   <div id="canvas-container" class="fixed top-0 left-0 w-full h-screen z-0"></div>
   
+  <!-- Language Switcher -->
+  <div class="language-switcher">
+    <button class="language-btn active" data-lang="id">ID</button>
+    <button class="language-btn" data-lang="en">EN</button>
+  </div>
+  
   <!-- Hero Section -->
   <section class="relative w-full h-screen flex flex-col items-center justify-center px-6 md:px-16">
     <div class="max-w-7xl mx-auto text-center z-10">
       <h1 class="text-4xl sm:text-6xl lg:text-8xl font-bold text-white-100 mb-4 opacity-0 transform translate-y-10 transition-all duration-1000" id="hero-title">
-        Aufer Page
+        <span>Aufer Page</span>
       </h1>
       <p class="text-xl sm:text-2xl text-secondary mb-8 opacity-0 transform translate-y-10 transition-all duration-1000 delay-300" id="hero-subtitle">
         <span id="changing-text" class="block min-h-[2rem]">Web Developer</span>
       </p>
       <button class="bg-tertiary hover:bg-black-100 text-white py-3 px-8 rounded-xl text-lg font-medium transition-all duration-300 opacity-0 transform translate-y-10" id="hero-button">
-        Lihat Portfolio
+        <span class="lang-text" data-lang-id="view-portfolio">Lihat Portofolio</span>
       </button>
     </div>
     <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 opacity-0" id="scroll-indicator">
@@ -95,31 +172,74 @@
   <!-- About Section -->
   <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div class="about-card opacity-0">
-        <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-8">Tentang Saya</h2>
-        <p class="text-secondary text-lg mb-6">
+      <!-- Image first on mobile, second on desktop -->
+      <div class="about-image opacity-0 flex justify-center items-center order-first md:order-last">
+        <div class="w-56 h-56 md:w-64 md:h-64 rounded-full bg-tertiary shadow-card overflow-hidden mb-8 md:mb-0">
+          <img src="/images/imageavatar.png" alt="Profile" class="w-full h-full object-cover" id="profile-image" />
+        </div>
+      </div>
+      
+      <!-- Text second on mobile, first on desktop -->
+      <div class="about-card opacity-0 order-last md:order-first mt-4 md:mt-0">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-6 md:mb-8 text-center md:text-left">
+          <span class="animated-underline lang-text" data-lang-id="about-me">Tentang Saya</span>
+        </h2>
+        <p class="text-secondary text-lg mb-6 lang-text" data-lang-id="about-p1">
           Halo! Saya adalah seorang web developer dengan minat kuat dalam pengembangan 3D interaktif, serta kemampuan di bidang hardware dan IoT. Saya senang menggabungkan kreativitas dengan keahlian teknis untuk menciptakan pengalaman web yang menarik, imersif, dan inovatif.
         </p>
-        <p class="text-secondary text-lg mb-6">
+        <p class="text-secondary text-lg mb-6 lang-text" data-lang-id="about-p2">
           Saya punya pengalaman dalam HTML, CSS, JavaScript, serta teknologi 3D seperti Three.js. Di sisi lain, saya juga bisa mengembangkan sistem berbasis mikrokontroler seperti Arduino dan ESP32, serta mampu mengintegrasikan perangkat keras seperti sensor, relay ke dalam solusi digital yang cerdas.
         </p>
-        <p class="text-secondary text-lg">
+        <p class="text-secondary text-lg mb-6 lang-text" data-lang-id="about-p3">
           Saya percaya bahwa masa depan teknologi adalah perpaduan antara software dan hardware yang saling terhubung. Karena itu, saya terus belajar, bereksperimen, dan menciptakan solusi kreatif yang bisa menjawab tantangan nyata. Terbuka untuk kolaborasi dan selalu siap untuk membawa ide menjadi kenyataan.
         </p>
-      </div>
-      <div class="about-image opacity-0 flex justify-center items-center">
-        <div class="w-64 h-64 sm:w-50 sm:h-50 rounded-full bg-tertiary shadow-card overflow-hidden">
-          <img src="/images/imageavatar.png" alt="Profile" class="w-full h-full object-cover" id="profile-image" />
+        
+        <!-- View CV Button -->
+        <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 mt-2">
+          <button id="view-cv-button" class="bg-tertiary hover:bg-blue-600 text-white py-3 px-6 rounded-xl text-base font-medium transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="lang-text" data-lang-id="view-cv">Lihat CV Saya</span>
+          </button>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- CV Options Modal (hidden by default) - Moved outside of the About section -->
+  <div id="cv-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 hidden overflow-y-auto">
+    <div class="bg-tertiary p-6 rounded-xl max-w-md w-full mx-4 my-8 transform transition-all duration-300 scale-95 opacity-0 max-h-[90vh] overflow-y-auto" id="cv-modal-content">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-white-100 lang-text" data-lang-id="choose-cv">Pilih CV</h3>
+        <button id="close-cv-modal" class="text-white hover:text-gray-300 transition-colors p-2 bg-black-200 hover:bg-tertiary rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <a href="https://drive.google.com/file/d/1HyMIvMcw4_uj6OQhq07UCHq6OQ8mWucK/view?usp=sharing" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <span class="font-medium lang-text" data-lang-id="cv1">CV 1</span>
+        </a>
+        <a href="https://drive.google.com/file/d/1lvKnlyrCaV9Z9c2t66lOKSiycp1HavRq/view" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex flex-col items-center justify-center text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <span class="font-medium lang-text" data-lang-id="cv2">CV 2</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Skills Section -->
   <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20 bg-black-100">
     <div class="max-w-7xl mx-auto">
       <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-16 text-center skills-title opacity-0">
-        Keterampilan Saya
+        <span class="animated-underline lang-text" data-lang-id="my-skills">Keterampilan Saya</span>
       </h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
         <!-- Skill Cards -->
@@ -214,33 +334,72 @@
   <!-- 3D Model Section -->
   <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20">
     <div class="max-w-7xl mx-auto text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-12 model-title opacity-0">
-        Model 3D Interaktif
+      <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-4 model-title opacity-0">
+        <span class="animated-underline lang-text" data-lang-id="solar-system">Model Tata Surya 3D</span>
       </h2>
+      <div id="indonesia-time" class="text-secondary mb-8 text-lg font-medium opacity-0">
+        <span id="day-name">Hari</span>, <span id="date-num">00</span> <span id="month-name">Bulan</span> <span id="year-num">0000</span> | <span id="time-display">00:00:00</span>
+      </div>
       <div id="model-container" class="w-full rounded-xl overflow-hidden bg-black-200 opacity-0 mx-auto"></div>
-      <p class="text-secondary mt-6 text-center model-description opacity-0">
-        Model 3D interaktif ini dapat diputar dengan mouse atau jari. Silakan eksplorasi dari berbagai sudut.
+      <p class="text-secondary mt-6 text-center model-description opacity-0 lang-text" data-lang-id="model-desc">
+        Model tata surya interaktif ini dapat dirotasi dengan mouse atau jari. Silakan eksplorasi dari berbagai sudut untuk melihat matahari, planet-planet beserta orbit mereka.
       </p>
     </div>
   </section>
 
   <!-- Portfolio Gallery Section -->
   <section id="portfolio" class="bg-black-200 py-16 md:py-24 relative portfolio-section">
-    <h2 class="text-3xl md:text-4xl font-bold text-white-100 mb-6 text-center">Portfolio</h2>
-    <p class="text-secondary text-center mb-12 max-w-2xl mx-auto">Beberapa proyek yang telah saya kerjakan, meliputi desain UI/UX, pengembangan website, dan aplikasi mobile.</p>
+    <h2 class="text-3xl md:text-4xl font-bold text-white-100 mb-6 text-center">
+      <span class="animated-underline lang-text" data-lang-id="portfolio">Portofolio</span>
+      </h2>
+    <p class="text-secondary text-center mb-8 max-w-2xl mx-auto lang-text" data-lang-id="portfolio-desc">Beberapa proyek yang telah saya kerjakan, meliputi desain UI/UX, pengembangan website, dan aplikasi mobile.</p>
     
+    <!-- Sertifikat Buttons -->
+    <div class="max-w-2xl mx-auto flex flex-wrap justify-center gap-4 mb-8">
+      <a href="/images/SertifikatCloud.png" target="_blank" class="certificate-button flex items-center bg-tertiary px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        <span class="text-white-100 font-medium lang-text" data-lang-id="cert-cloud">Sertifikat Cloud</span>
+      </a>
+      <a href="/images/SertifkatCybersecurity.png" target="_blank" class="certificate-button flex items-center bg-tertiary px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        <span class="text-white-100 font-medium lang-text" data-lang-id="cert-cyber">Sertifikat Cybersecurity</span>
+      </a>
+      <a href="/images/SertifikatSoftwareEngineering.png" target="_blank" class="certificate-button flex items-center bg-tertiary px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-white-100 font-medium lang-text" data-lang-id="cert-se">Sertifikat Software Engineering</span>
+      </a>
+      <a href="/images/SertifikatJSAlgoritma.png" target="_blank" class="certificate-button flex items-center bg-tertiary px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-white-100 font-medium lang-text" data-lang-id="cert-js">Sertifikat JS Algoritma</span>
+      </a>
+      <a href="/images/ResponsiveWebDesign.png" target="_blank" class="certificate-button flex items-center bg-tertiary px-4 py-2 rounded-lg hover:bg-blue-600 transition-all duration-300 transform hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-white-100 font-medium lang-text" data-lang-id="cert-rwd">Sertifikat Web Design</span>
+          </a>
+        </div>
+        
     <div class="portfolio-wrapper max-w-6xl mx-auto relative">
       <!-- Mobile swipe instruction - Only visible on mobile -->
       <p class="swipe-instruction text-center mb-4">
-        <span>← Geser untuk melihat lebih banyak →</span>
+        <span class="lang-text" data-lang-id="swipe-instruction">← Geser untuk melihat lebih banyak →</span>
       </p>
       
       <!-- Portfolio Carousel -->
-      <div id="portfolio-carousel" class="flex overflow-x-scroll hide-scrollbar gap-6 pb-6">
+      <div id="portfolio-carousel" class="scrollbar-hide flex overflow-x-scroll gap-6 pb-6">
         <!-- Portfolio items will be rendered here -->
       </div>
       
-      <!-- Navigation Buttons - Only visible on desktop -->
+      <!-- Navigation Buttons - Hanya tampil di desktop -->
       <button id="carousel-prev" class="carousel-nav-button prev-button" aria-label="Previous Projects">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 nav-arrow">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -258,43 +417,43 @@
   <section class="relative w-full min-h-screen flex items-center z-10 px-6 md:px-16 py-20">
     <div class="max-w-3xl mx-auto w-full">
       <h2 class="text-3xl sm:text-4xl font-bold text-white-100 mb-12 text-center contact-title opacity-0">
-        Hubungi Saya
+        <span class="animated-underline lang-text" data-lang-id="contact">Hubungi Saya</span>
       </h2>
       <div class="contact-form bg-tertiary p-8 rounded-xl shadow-card opacity-0">
         <form id="contact-form" action="https://formsubmit.co/ferrymaulanamalikibrahim@gmail.com" method="POST" class="w-full">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="w-full">
-              <label for="name" class="block text-secondary mb-2">Nama</label>
+            <label for="name" class="block text-secondary mb-2 lang-text" data-lang-id="name">Nama</label>
               <input type="text" id="name" name="name" required placeholder="Masukkan nama Anda" class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
+          </div>
             <div class="w-full">
-              <label for="email" class="block text-secondary mb-2">Email</label>
+            <label for="email" class="block text-secondary mb-2 lang-text" data-lang-id="email">Email</label>
               <input type="email" id="email" name="email" required placeholder="email@contoh.com" class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
           </div>
           <div class="mb-6 w-full">
-            <label for="subject" class="block text-secondary mb-2">Subjek</label>
+          <label for="subject" class="block text-secondary mb-2 lang-text" data-lang-id="subject">Subjek</label>
             <input type="text" id="subject" name="subject" required placeholder="Subjek pesan" class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
+        </div>
           <div class="mb-6 w-full">
-            <label for="message" class="block text-secondary mb-2">Pesan</label>
+          <label for="message" class="block text-secondary mb-2 lang-text" data-lang-id="message">Pesan</label>
             <textarea id="message" name="message" rows="5" required placeholder="Ketik pesan Anda di sini..." class="w-full bg-black-200 text-white-100 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
-          </div>
+        </div>
           <input type="hidden" name="_next" value="http://localhost:5174/?thanks=true">
-          <input type="hidden" name="_subject" value="[Portfolio] Pesan baru dari website portofolio">
+          <input type="hidden" name="_subject" value="[Portofolio] Pesan baru dari website portofolio">
           <input type="hidden" name="_captcha" value="true">
           <input type="hidden" name="_template" value="table">
           <input type="text" name="_honey" style="display:none">
           <div class="flex items-center mb-6">
             <input id="terms" type="checkbox" required class="w-4 h-4 bg-black-200 border-gray-600 rounded focus:ring-blue-500">
-            <label for="terms" class="ml-2 text-sm text-secondary terms-label">Saya menyetujui penggunaan data untuk keperluan komunikasi</label>
-          </div>
+            <label for="terms" class="ml-2 text-sm text-secondary terms-label lang-text" data-lang-id="terms">Saya menyetujui penggunaan data untuk keperluan komunikasi</label>
+        </div>
           <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
-            <span>Kirim Pesan</span>
+            <span class="lang-text" data-lang-id="send-message">Kirim Pesan</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </button>
+        </button>
         </form>
       </div>
     </div>
@@ -305,12 +464,22 @@
     <div class="max-w-7xl mx-auto px-6 md:px-16">
       <div class="flex flex-col md:flex-row justify-between items-center mb-8">
         <div class="mb-6 md:mb-0">
-          <h3 class="text-white-100 text-xl font-bold mb-4">Kontak</h3>
-          <p class="text-secondary">ferrymaulanamalikibrahim@gmail.com</p>
-          <p class="text-secondary">+62 857 1249 1089</p>
+          <h3 class="text-white-100 text-xl font-bold mb-4 lang-text" data-lang-id="contact-info">Kontak</h3>
+          <p class="text-secondary flex items-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            ferrymaulanamalikibrahim@gmail.com
+          </p>
+          <p class="text-secondary flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+            +62 857 1249 1089
+          </p>
         </div>
         <div class="flex flex-col">
-          <h3 class="text-white-100 text-xl font-bold mb-4 text-center md:text-right">Media Sosial</h3>
+          <h3 class="text-white-100 text-xl font-bold mb-4 text-center md:text-right lang-text" data-lang-id="social-media">Media Sosial</h3>
           <div class="flex space-x-4">
             <a href="https://github.com/ICR-1" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white-100 transition-all social-link flex flex-col items-center">
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -334,7 +503,9 @@
         </div>
       </div>
       <div class="border-t border-gray-800 pt-6 text-center">
-        <p class="text-secondary">© 2025 Portfolio 3D. Terms and Conditions | Privacy Policy.</p>
+        <p class="text-secondary">
+          Built using <span id="tech-stack-text" class="text-blue-500 font-medium">HTML</span>
+        </p>
       </div>
     </div>
   </footer>
@@ -370,25 +541,12 @@
         </div>
       </div>
       
-      <!-- Navigation controls -->
-      <div class="w-full flex justify-between items-center p-4">
-        <button id="prev-project" class="text-white p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        
-        <!-- Project title and info -->
+      <!-- Project title and info -->
+      <div class="w-full flex justify-center items-center p-4">
         <div class="text-center">
           <h3 id="lightbox-title" class="text-white text-xl font-semibold"></h3>
           <p id="lightbox-description" class="text-secondary text-sm mt-1"></p>
         </div>
-        
-        <button id="next-project" class="text-white p-2 rounded-full bg-black-200 hover:bg-tertiary transition-all">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
       </div>
       
       <!-- Thumbnails slider (optional) -->
@@ -408,11 +566,11 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <h2 class="text-2xl font-bold text-white-100 mb-4">Terima Kasih!</h2>
-      <p class="text-secondary mb-6">Pesan Anda telah berhasil terkirim ke Ferry Maulana Malik Ibrahim. Saya akan menghubungi Anda kembali secepatnya.</p>
+      <h2 class="text-2xl font-bold text-white-100 mb-4 lang-text" data-lang-id="thank-you">Terima Kasih!</h2>
+      <p class="text-secondary mb-6 lang-text" data-lang-id="thank-you-message">Pesan Anda telah berhasil terkirim ke Ferry Maulana Malik Ibrahim. Saya akan menghubungi Anda kembali secepatnya.</p>
       <div class="flex justify-center">
         <button id="thank-you-close" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-all duration-300 flex items-center">
-          <span>Kembali ke Portfolio</span>
+          <span class="lang-text" data-lang-id="back-to-portfolio">Kembali ke Portofolio</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
